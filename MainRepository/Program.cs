@@ -1,7 +1,17 @@
-﻿internal class Program
+﻿// Print Pascal's triangle
+Console.Write("Enter no of Lines: ");
+int n = Convert.ToInt32(Console.ReadLine());
+int spaces = n;
+for (int i = 0; i < n; i++)
 {
-    private static void Main(string[] args)
+    for (int s = 1; s <= spaces; s++)
+        Console.Write(" ");
+    int num = 1;
+    for (int j = 0; j <= i; j++)
     {
-        Console.WriteLine("Hello, World!");
+        Console.Write(num + " ");
+        num = num * (i - j) / (j + 1);
     }
+    spaces--;
+    Console.WriteLine();
 }
