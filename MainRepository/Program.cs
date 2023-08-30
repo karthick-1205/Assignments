@@ -1,7 +1,14 @@
-﻿internal class Program
+﻿//Isogram
+Console.Write("Enter the string: ");
+string input = Console.ReadLine();
+Console.WriteLine($"The given {input} string is " + (isIsogram(input) ? "isogram" : "not a isogram"));
+static bool isIsogram(string s)
 {
-    private static void Main(string[] args)
+    Dictionary<char, int> Unique = new();
+    foreach (char c in s)
     {
-        Console.WriteLine("Hello, World!");
+        if (Unique.ContainsKey(c)) return false;
+        else Unique[c] = 1;
     }
+    return true;
 }
