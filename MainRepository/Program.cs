@@ -6,8 +6,6 @@ Console.WriteLine($"Before Swapping a= {a}, b = {b}");
 swapNumber(a, b);
 static void swapNumber(int a, int b)
 {
-    int temp = a;
-    a = b;
-    b = temp;
+    (a, b) = (b, a);
     Console.WriteLine($"After Swapping a= {a}, b = {b}");
 }
