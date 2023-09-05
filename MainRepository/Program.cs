@@ -1,29 +1,21 @@
 ﻿//Display the individual digits of given number
-for (; ; )
+while (true)
 {
     Console.Write("Enter the number or press [e] to exit: ");
     string input = Console.ReadLine();
     if (input.ToLower() == "e") break;
-    if (double.TryParse(input, out double n) && n > 0)
+    if (double.TryParse(input, out double d) && d > 0)
     {
         if (input.Contains("."))
         {
-            string[] result = input.Split('.');
-            char[] int_part_array = result[0].ToCharArray();
-            char[] fract_part_array = result[1].ToCharArray();
-            string resultString = String.Join(" ", int_part_array);
-            string resultString1 = String.Join(" ", fract_part_array);
-            if (resultString.Length > 0 && resultString1.Length == 0) Console.Write($"Integral part:{resultString}\n");
-            if (resultString1.Length > 0 && resultString.Length == 0) Console.Write($"Factorial part:{resultString1}\n");
-            if (resultString.Length > 0 && resultString1.Length > 0)
-            {
-                Console.Write($"Integral part:{resultString} ");
-                Console.WriteLine($"Factorial part:{resultString1}");
-            }
-
+            string[] split = input.Split('.');
+            string integral = string.Join(" ", split[0].ToCharArray());
+            string factorial = string.Join(" ", split[1].ToCharArray());
+            Console.WriteLine($"Integral part:{integral} ");
+            Console.WriteLine($"Factorial part:{factorial}");
 
         }
-        else Console.WriteLine("Enter the valid input");
+        else Console.WriteLine($"Integral part:{string.Join(" ", input.ToCharArray())} ");
     }
     else Console.WriteLine("Enter the valid input");
 }
