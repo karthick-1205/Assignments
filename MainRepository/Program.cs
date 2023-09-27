@@ -1,21 +1,21 @@
 ﻿//Chocolate Wrappers
 while (true) {
-   int m = GetNumber ("Enter the money: ");
-   int p = GetNumber ("Enter the the price of the chocolate: ");
-   int w = GetNumber ("Enter the number chocolate wrapper in exchange: ");
+   int m = GetNumber ("Enter the money: ", out int n);
+   int p = GetNumber ("Enter the the price of the chocolate: ", out int n1);
+   int w = GetNumber ("Enter the number chocolate wrapper in exchange: ", out int n2);
    while (w == 1) {
       Console.WriteLine ("Enter the number greater than 1");
-      w = GetNumber ("Enter the number chocolate wrapper in exchange: ");
+      w = GetNumber ("Enter the number chocolate wrapper in exchange: ", out int n3);
    }
    ChocolateWrapper (m, p, w);
 }
 
 /// <summary> Displays total chocolate, remain balance amount and remain wrappers </summary>
 void ChocolateWrapper (int money, int price, int wrapper) {
-   int totalChocolate = money / price, remainWrappers = totalChocolate;
+   int totalChocolate = money / price, remainWrappers = totalChocolate, newChocolate;
    int unusedMoney = money % price;
    while (remainWrappers > wrapper - 1) {
-      int newChocolate = remainWrappers / wrapper;
+      newChocolate = remainWrappers / wrapper;
       remainWrappers = remainWrappers - (newChocolate * wrapper) + newChocolate;
       totalChocolate += newChocolate;
    }
@@ -25,13 +25,18 @@ void ChocolateWrapper (int money, int price, int wrapper) {
 }
 
 /// <summary> Returns valid postive integer from the user for the given message </summary>
-static int GetNumber (string message) {
+static int GetNumber (string message, out int number) {
    string response;
-   int number = 0;
+   number = 0;
    do {
       if (number < 0) Console.WriteLine ("Enter the valid input");
       Console.Write (message);
       response = Console.ReadLine ();
+      while (!response.All (char.IsDigit)) {
+         Console.WriteLine ("Enter the valid input");
+         Console.Write (message);
+         response = Console.ReadLine ();
+      }
    }
    while (int.TryParse (response, out number) && number <= 0);
    return number;
