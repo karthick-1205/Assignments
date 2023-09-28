@@ -1,13 +1,13 @@
 ﻿//Chocolate Wrappers
 while (true) {
-   int m = GetNumber ("Enter the money: ", out int n);
-   int p = GetNumber ("Enter the the price of the chocolate: ", out int n1);
-   int w = GetNumber ("Enter the number chocolate wrapper in exchange: ", out int n2);
-   while (w == 1) {
+   GetNumber ("Enter the money: ", out int n);
+   GetNumber ("Enter the the price of the chocolate: ", out int n1);
+   GetNumber ("Enter the number chocolate wrapper in exchange: ", out int n2);
+   while (n2 == 1) {
       Console.WriteLine ("Enter the number greater than 1");
-      w = GetNumber ("Enter the number chocolate wrapper in exchange: ", out int n3);
+      GetNumber ("Enter the number chocolate wrapper in exchange: ", out n2);
    }
-   ChocolateWrapper (m, p, w);
+   ChocolateWrapper (n, n1, n2);
 }
 
 /// <summary> Displays total chocolate, remain balance amount and remain wrappers </summary>
@@ -25,7 +25,7 @@ void ChocolateWrapper (int money, int price, int wrapper) {
 }
 
 /// <summary> Returns valid postive integer from the user for the given message </summary>
-static int GetNumber (string message, out int number) {
+static void GetNumber (string message, out int number) {
    string response;
    number = 0;
    do {
@@ -39,5 +39,4 @@ static int GetNumber (string message, out int number) {
       }
    }
    while (int.TryParse (response, out number) && number <= 0);
-   return number;
 }
