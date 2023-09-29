@@ -3,6 +3,7 @@ Console.Write ("Enter the number: ");
 string input = Console.ReadLine ();
 List<int> binary = new ();
 List<char> hexadecimal = new ();
+List<char> hexValues = new () { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 if (int.TryParse (input, out int number) && number > 0) {
    while (number > 0) {
       binary.Add (number % 2);
@@ -10,16 +11,7 @@ if (int.TryParse (input, out int number) && number > 0) {
    }
    number = int.Parse (input);
    while (number > 0) {
-      int temp = number % 16;
-      if (temp < 10) {
-         // if temp value range from 0 to 9, then we have to add 48 to convert integer value to ascii character.  
-         temp += 48;
-         hexadecimal.Add ((char)temp);
-      } else {
-         // if temp value is above 9, then we have to add 55 to convert integer value to ascii character.  
-         temp += 55;
-         hexadecimal.Add ((char)temp);
-      }
+      hexadecimal.Add (hexValues[number % 16]);
       number /= 16;
    }
    binary.Reverse ();
