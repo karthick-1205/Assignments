@@ -1,6 +1,5 @@
 ﻿// Program to convert the decimal number to binary and hexadecimal number.
 Console.Write ("Enter the number: ");
-string hexValues = "0123456789ABCDEF";
 if (!int.TryParse (Console.ReadLine (), out int input)) { Console.WriteLine ("Enter the valid input"); return; }
 int number = input;
 List<int> binary = new ();
@@ -10,6 +9,7 @@ while (number > 0) {
 }
 number = input;
 List<char> hexadecimal = new ();
+string hexValues = "0123456789ABCDEF";
 while (number > 0) {
    hexadecimal.Add (hexValues[number % 16]);
    number /= 16;
