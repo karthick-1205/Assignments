@@ -3,7 +3,7 @@
 /// It then prints the sorted array by keeping the elements matching S to the last of the array.</summary>
 while (true) {
    Console.Write ("Enter the list of character: ");
-   string input = Console.ReadLine ()!.ToLower ();// .Replace (" ", "");
+   string input = Console.ReadLine ()!.ToLower ();
    if (input == "") Console.WriteLine ("Enter the valid input");
    else {
       char[] charArray = input.Where (x => char.IsLetter (x)).ToArray ();
