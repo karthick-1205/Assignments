@@ -8,13 +8,11 @@ while (true) {
          string[] split = input.Split ('.');
          string integral = string.Join (" ", split[0].ToCharArray ());
          string factorial = string.Join (" ", split[1].ToCharArray ());
-         if (integral.Length > 0 && factorial.Length == 0) {
-            Console.WriteLine ("Enter the valid input");
-         } else {
+         if (integral.Length > 0 && factorial.Length == 0) Console.WriteLine ("Enter the valid input");
+         else {
             Console.WriteLine ($"Integral part:{integral} ");
             Console.WriteLine ($"Factorial part:{factorial}");
          }
-
       } else Console.WriteLine ($"Integral part:{string.Join (" ", input.ToCharArray ())} ");
    } else Console.WriteLine ("Enter the valid input");
 }
