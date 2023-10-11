@@ -9,17 +9,26 @@ using (var sr = new StreamReader (stm)) {
    }
 }
 static bool isValidPassword (string s) {
-   bool containsUpperCase = false;
-   bool containsLowerCase = false;
-   bool containsDigits = false;
-   bool containsSpecialChar = false;
-   if (s.Length < 6) return false;
-   for (int i = 0; i < s.Length; i++) {
-      char ch = s[i];
-      if (Char.IsUpper (ch)) containsUpperCase = true;
-      if (Char.IsLower (ch)) containsLowerCase = true;
-      if (Char.IsDigit (ch)) containsDigits = true;
-      if (!Char.IsLetter (ch) && !Char.IsDigit (ch) && !Char.IsWhiteSpace (ch)) containsSpecialChar = true;
+   string specialChar = "!@#$%^&*()-+";
+   if (s.Length < 6) {
+      Console.WriteLine ("Length of the password must be atleast 6.");
+      return false;
    }
-   return (containsUpperCase && containsLowerCase && containsDigits && containsSpecialChar);
+   if (!s.Any (char.IsUpper)) {
+      Console.WriteLine ("Password must contain atleast 1 upper case letter.");
+      return false;
+   }
+   if (!s.Any (char.IsLower)) {
+      Console.WriteLine ("Password must contain atleast 1 lower case letter.");
+      return false;
+   }
+   if (!s.Any (char.IsDigit)) {
+      Console.WriteLine ("Password must contain atleast 1 digit.");
+      return false;
+   }
+   if (!s.Any (specialChar.Contains)) {
+      Console.WriteLine ("Password must contain atleast 1 special case letter.");
+      return false;
+   }
+   return true;
 }
