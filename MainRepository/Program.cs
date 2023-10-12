@@ -1,17 +1,26 @@
 ﻿// Program to find the gcd and lcm of two numbers.
-Console.Write ("Enter the first number: ");
-int n1, n2, x, y, temp, gcd, lcm;
-n1 = Convert.ToInt32 (Console.ReadLine ());
-Console.Write ("Enter the second number: ");
-n2 = Convert.ToInt32 (Console.ReadLine ());
-x = n1;
-y = n2;
+int n1 = GetNumber ("Enter the first number: ");
+int n2 = GetNumber ("Enter the second number: ");
+int x = n1;
+int y = n2;
 while (y > 0) {
-   temp = y;
+   int temp = y;
    y = x % y;
    x = temp;
 }
-gcd = x;
-lcm = (n1 * n2) / gcd;
-Console.WriteLine ("The GCD of two number is " + gcd);
-Console.WriteLine ("The LCM of two number is " + lcm);
+int gcd = x;
+int lcm = (n1 * n2) / gcd;
+Console.WriteLine ($"The GCD of two number is {gcd}");
+Console.WriteLine ($"The LCM of two number is {lcm}");
+
+static int GetNumber (string message) {
+   string response;
+   int number = 0;
+   do {
+      if (number < 0) Console.WriteLine ("Enter the valid input");
+      Console.Write (message);
+      response = Console.ReadLine ();
+   }
+   while (int.TryParse (response, out number) && number <= 0);
+   return number;
+}
