@@ -16,7 +16,7 @@ static void GetNumber (string message, out int number) {
    Console.Write (message);
    while (!int.TryParse (Console.ReadLine (), out number) || number <= 0) {
       if (number > 0) break;
-      else Console.WriteLine ("Enter the valid input");
+      Console.WriteLine ("Enter the valid input");
       Console.Write (message);
    }
 }
