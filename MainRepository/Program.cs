@@ -1,6 +1,4 @@
 ﻿// Program to find user is supposed to guess a number between 0 and 100 in a maximum of 8 attempts.
-using System.Diagnostics.Metrics;
-
 namespace Test2 {
    class Program {
       static void Main (string[] args) {
@@ -11,18 +9,13 @@ namespace Test2 {
                Console.WriteLine ("Enter the valid input");
             } else {
                tryCount++;
-               switch (rand.CompareTo (number)) {
-                  case 1:
-                     Console.WriteLine ("The number is higher, guess again.");
-                     break;
-                  case -1:
-                     Console.WriteLine ("The number is lesser, guess again.");
-                     break;
-                  default:
-                     Console.WriteLine ("Correct, you Win!");
-                     Console.WriteLine ("Number of tries: {0}", tryCount);
-                     break;
-               }
+               var x = rand.CompareTo (number) switch {
+                  1 => "The number is higher, guess again.",
+                  -1 => "The number is lesser, guess again.",
+                  _ => "Correct, you Win!",
+               };
+               Console.WriteLine (x);
+               Console.WriteLine ("Number of tries: {0}", tryCount);
             }
          }
          if (tryCount == 8) {
