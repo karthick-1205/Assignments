@@ -9,11 +9,16 @@ namespace Test2 {
                Console.WriteLine ("Enter the valid input");
             } else {
                tryCount++;
-               var x = rand.CompareTo (number) switch {
-                  1 => "The number is higher, guess again.",
-                  -1 => "The number is lesser, guess again.",
+               var x = (number - rand) switch {
+                  > 0 => "The number is higher, guess again.",
+                  < 0 => "The number is lesser, guess again.",
                   _ => "Correct, you Win!",
                };
+               if (x == "Correct, you Win!") {
+                  Console.WriteLine (x);
+                  Console.WriteLine ("Number of tries: {0}", tryCount);
+                  break;
+               }
                Console.WriteLine (x);
                Console.WriteLine ("Number of tries: {0}", tryCount);
             }
