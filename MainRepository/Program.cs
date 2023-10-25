@@ -14,13 +14,10 @@ namespace Test2 {
                   < 0 => "The number is lesser, guess again.",
                   _ => "Correct, you Win!",
                };
-               if (x == "Correct, you Win!") {
-                  Console.WriteLine (x);
-                  Console.WriteLine ("Number of tries: {0}", tryCount);
-                  break;
-               }
+               bool win = number == rand;
                Console.WriteLine (x);
                Console.WriteLine ("Number of tries: {0}", tryCount);
+               if (win) return;
             }
          }
          if (tryCount == 8) {
