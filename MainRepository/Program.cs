@@ -6,8 +6,10 @@ using (var sr = new StreamReader (stm)) {
    while (!sr.EndOfStream) {
       var result = sr.ReadLine ();
       Console.WriteLine ($"The given {result} password is " + (isValidPassword (result) ? "Strong" : "Weak"));
+      Console.WriteLine ();
    }
 }
+
 static bool isValidPassword (string s) {
    string specialChar = "!@#$%^&*()-+";
    if (s.Length < 6) {
@@ -28,6 +30,10 @@ static bool isValidPassword (string s) {
    }
    if (!s.Any (specialChar.Contains)) {
       Console.WriteLine ("Password must contain atleast 1 special case letter.");
+      return false;
+   }
+   if (s.Any (c => !char.IsLetterOrDigit (c) && !specialChar.Contains (c))) {
+      Console.WriteLine ("Special character contains only any one of this string !@#$%^&*()-+");
       return false;
    }
    return true;
