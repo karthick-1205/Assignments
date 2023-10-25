@@ -20,10 +20,8 @@ namespace Test2 {
                if (win) return;
             }
          }
-         if (tryCount == 8) {
-            Console.WriteLine ("you lose game");
-            Console.WriteLine ($"The guessed number is {rand}");
-         }
+         Console.WriteLine ("you lose game");
+         Console.WriteLine ($"The guessed number is {rand}");
       }
    }
 }
