@@ -12,27 +12,39 @@ using (var sr = new StreamReader (stm)) {
 
 static bool isValidPassword (string s) {
    string specialChar = "!@#$%^&*()-+";
+   bool isUpper = false;
+   bool isLower = false;
+   bool isDigits = false;
+   bool isSpecialChar = false;
+   bool isInvalid = false;
    if (s.Length < 6) {
       Console.WriteLine ("Length of the password must be atleast 6.");
       return false;
    }
-   if (!s.Any (char.IsUpper)) {
+   foreach (char c in s) {
+      if (c >= 'A' && c <= 'Z') isUpper = true;
+      else if (c >= 'a' && c <= 'z') isLower = true;
+      else if (c >= '0' && c <= '9') isDigits = true;
+      else if (specialChar.Contains (c)) isSpecialChar = true;
+      else isInvalid = true;
+   }
+   if (!isUpper) {
       Console.WriteLine ("Password must contain atleast 1 upper case letter.");
       return false;
    }
-   if (!s.Any (char.IsLower)) {
+   if (!isLower) {
       Console.WriteLine ("Password must contain atleast 1 lower case letter.");
       return false;
    }
-   if (!s.Any (char.IsDigit)) {
+   if (!isDigits) {
       Console.WriteLine ("Password must contain atleast 1 digit.");
       return false;
    }
-   if (!s.Any (specialChar.Contains)) {
+   if (!isSpecialChar) {
       Console.WriteLine ("Password must contain atleast 1 special case letter.");
       return false;
    }
-   if (s.Any (c => !char.IsLetterOrDigit (c) && !specialChar.Contains (c))) {
+   if (isInvalid) {
       Console.WriteLine ("Special character contains only any one of this string !@#$%^&*()-+");
       return false;
    }
