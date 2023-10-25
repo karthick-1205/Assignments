@@ -1,12 +1,13 @@
 ﻿//String permutation
 Console.Write ("Enter the string: ");
 string str = Console.ReadLine ();
-if (str.Length == 0) {
+if (str.Length == 0 || string.IsNullOrWhiteSpace (str)) {
    Console.WriteLine ("Enter valid input");
    return;
 }
 HashSet<string> result = GetPermutations (str);
 Console.WriteLine ($"Permutation of {str} are " + string.Join (" ", result));
+
 static HashSet<string> GetPermutations (string str) {
    HashSet<string> permutations = new ();
    if (str.Length == 0) {
