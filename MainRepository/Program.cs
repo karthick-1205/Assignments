@@ -3,8 +3,11 @@
    string input = Console.ReadLine ();
    if (input.ToLower () == "e") break;
    if (int.TryParse (input, out int num) && num > 0 && num <= 3999) {
-      Console.WriteLine (NumberToRoman (num));
-      NumberToWord (num);
+      Console.Write ("Is this number to be output in the 'r' for Roman or 'w' for Word format?");
+      char outputFormat = Convert.ToChar (Console.ReadLine ().ToLower ());
+      if (outputFormat == 'r') Console.WriteLine (NumberToRoman (num));
+      else if (outputFormat == 'w') NumberToWord (num);
+      else Console.WriteLine ("Enter the valid output format");
    } else if (num > 3999) Console.WriteLine ("Maximum limit is 3999");
    else Console.WriteLine ("Enter the number greater than zero");
 }
