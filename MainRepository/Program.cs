@@ -5,18 +5,17 @@ using (var stm = Assembly.GetExecutingAssembly ().GetManifestResourceStream ("Ma
 using (var sr = new StreamReader (stm)) {
    while (!sr.EndOfStream) {
       var result = sr.ReadLine ();
-      Console.WriteLine ($"The given {result} password is " + (isValidPassword (result) ? "Strong" : "Weak"));
+      Console.WriteLine ($"The given {result} password is " + (IsValidPassword (result) ? "Strong" : "Weak"));
       Console.WriteLine ();
    }
 }
 
-static bool isValidPassword (string s) {
+/// <summary>Returns whether the given password is strong or weak.</summary>
+static bool IsValidPassword (string s) {
    string specialChar = "!@#$%^&*()-+";
-   bool isUpper = false;
-   bool isLower = false;
-   bool isDigits = false;
-   bool isSpecialChar = false;
-   bool isInvalid = false;
+   bool isUpper, isLower, isDigits, isSpecialChar, isInvalid;
+   isUpper = isLower = isDigits = false;
+   isSpecialChar = isInvalid = false;
    if (s.Length < 6) {
       Console.WriteLine ("Length of the password must be atleast 6.");
       return false;
@@ -26,7 +25,10 @@ static bool isValidPassword (string s) {
       else if (c >= 'a' && c <= 'z') isLower = true;
       else if (c >= '0' && c <= '9') isDigits = true;
       else if (specialChar.Contains (c)) isSpecialChar = true;
-      else isInvalid = true;
+      else {
+         isInvalid = true;
+         break;
+      }
    }
    if (!isUpper) {
       Console.WriteLine ("Password must contain atleast 1 upper case letter.");
