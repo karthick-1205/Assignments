@@ -11,13 +11,13 @@
 
    /// <summary>Remove elements from the stack</summary>
    public T Pop () {
-      if (mPointer == 0) throw new InvalidOperationException ("Stack empty");
+      if (IsEmpty) throw new InvalidOperationException ("Stack empty");
       return stackArray[--mPointer];
    }
 
    /// <summary>Returns top most element of the stack</summary>
    public T Peek () {
-      if (mPointer == 0) throw new InvalidOperationException ("Stack empty");
+      if (IsEmpty) throw new InvalidOperationException ("Stack empty");
       T a = Pop ();
       Push (a);
       return a;
