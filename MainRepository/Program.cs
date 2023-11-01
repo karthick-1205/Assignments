@@ -6,8 +6,7 @@ namespace Training {
          Dictionary<char, int> dict = new ();
          foreach (string word in words) {
             foreach (char ch in word) {
-               if (dict.ContainsKey (ch)) dict[ch] = dict[ch] + 1;
-               else dict[ch] = 1;
+               dict[ch] = dict.TryGetValue (ch, out int value) ? value + 1 : 1;
             }
          }
          var result = dict.OrderByDescending (x => x.Value).Take (7);
