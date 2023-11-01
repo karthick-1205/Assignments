@@ -12,9 +12,9 @@ namespace Test2 {
             Console.WriteLine ("Please enter 1: If computer guessed number is lower than what you have chosen!");
             Console.WriteLine ("Please enter 2: If computer guessed number is greater than what you have chosen!");
             Console.WriteLine ("Please enter 3: If computer guessed number is equal to what you have chosen!");
-            if (!int.TryParse (Console.ReadLine (), out int user_response) || user_response < 0) {
+            if (!int.TryParse (Console.ReadLine (), out int user_response))
                Console.WriteLine ("Enter the valid input");
-            } else {
+            else {
                switch (user_response) {
                   case 1:
                      lower = guessed_num;
@@ -23,7 +23,7 @@ namespace Test2 {
                      upper = guessed_num;
                      break;
                   case 3:
-                     Console.WriteLine ("I found it " + guess_count + " guesses");
+                     Console.WriteLine ("I found it in" + guess_count + " guesses");
                      return;
                   default:
                      Console.WriteLine ("Invalid number");
