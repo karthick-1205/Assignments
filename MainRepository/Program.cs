@@ -1,24 +1,18 @@
-﻿// Program to find the possible combination of queen in the n*n chess board
-class NQueen {
+﻿// Program to find the possible combinations of queen in the n*n chess board
+class PlaceNQueen {
    static int Count;
-   //Function to check if two queens attack each other or not
+   // Function to check if two queens attack each other or not
    // Unicode of queen-\u2655
    static bool IsSafe (char[,] board, int r, int c) {
       // Checking the column 
-      for (int i = 0; i < r; i++) {
-         if (board[i, c] == '\u2655')
-            return false;
-      }
+      for (int i = 0; i < r; i++)
+         if (board[i, c] == '\u2655') return false;
       // Checking the left diagonal 
-      for (int i = r, j = c; i >= 0 && j >= 0; i--, j--) {
-         if (board[i, j] == '\u2655')
-            return false;
-      }
+      for (int i = r, j = c; i >= 0 && j >= 0; i--, j--)
+         if (board[i, j] == '\u2655') return false;
       // Checking the right diagonal 
-      for (int i = r, j = c; i >= 0 && j < board.GetLength (0); i--, j++) {
-         if (board[i, j] == '\u2655')
-            return false;
-      }
+      for (int i = r, j = c; i >= 0 && j < board.GetLength (0); i--, j++)
+         if (board[i, j] == '\u2655') return false;
       return true;
    }
 
@@ -39,30 +33,30 @@ class NQueen {
       Console.WriteLine ("└───┴───┴───┴───┴───┴───┴───┴───┘");
    }
 
-   static void Nqueen (char[,] board, int r) {
-      // if N queesn are placed successfully,print the solution
+   static void NQueen (char[,] board, int r) {
+      // if N queens are placed successfully,print the solution
       if (r == board.GetLength (0)) {
-         PrintSolution (board);
          Count++;
-         Console.WriteLine ($"the solutions number are {Count}");
+         Console.WriteLine ($"Solution {Count}");
+         PrintSolution (board);
       }
       for (int i = 0; i < board.GetLength (0); i++) {
          if (IsSafe (board, r, i)) {
             // Place queen on the current square
             board[r, i] = '\u2655';
             // Recursion for the next row
-            Nqueen (board, r + 1);
+            NQueen (board, r + 1);
             // Backtrack and remove the queen from the current square
             board[r, i] = '-';
          }
       }
    }
 
-   static void Main (string[] args) {
+   static void Main () {
       // N*N Chessboard
       int n = 8;
       char[,] board = new char[n, n];
       Console.OutputEncoding = System.Text.Encoding.Unicode;
-      Nqueen (board, 0);
+      NQueen (board, 0);
    }
 }
