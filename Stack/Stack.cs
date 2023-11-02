@@ -1,18 +1,18 @@
 ﻿public class TStack<T> {
    /// <summary>Inserts elements into the stack</summary>
    public void Push (T a) {
-      if (mPointer == stackArray.Length) {
+      if (mPointer == mStackArray.Length) {
          var tmp = new T[mPointer * 2];
-         for (int i = 0; i < mPointer; i++) tmp[i] = stackArray[i];
-         stackArray = tmp;
+         for (int i = 0; i < mPointer; i++) tmp[i] = mStackArray[i];
+         mStackArray = tmp;
       }
-      stackArray[mPointer++] = a;
+      mStackArray[mPointer++] = a;
    }
 
-   /// <summary>Remove elements from the stack</summary>
+   /// <summary>Removes elements from the stack</summary>
    public T Pop () {
       if (IsEmpty) throw new InvalidOperationException ("Stack empty");
-      return stackArray[--mPointer];
+      return mStackArray[--mPointer];
    }
 
    /// <summary>Returns top most element of the stack</summary>
@@ -26,6 +26,6 @@
    /// <summary>Returns true if the stack is empty</summary>
    public bool IsEmpty => mPointer == 0;
 
-   T[] stackArray = new T[4];
+   T[] mStackArray = new T[4];
    int mPointer;
 }

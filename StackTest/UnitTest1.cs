@@ -3,24 +3,26 @@ namespace StackTest {
    public class UnitTest1 {
       [TestMethod]
       public void TestPushAndPop () {
-         TStack<int> stack = new ();
-         stack.Push (1);
-         stack.Push (2);
-         stack.Push (3);
-         stack.Push (4);
-         stack.Push (5);
-         stack.Push (6);
-         int popValue = stack.Pop ();
-         Assert.AreEqual (6, popValue);
+         TStack<int> tStack = new ();
+         Stack<int> stack = new ();
+         var vals = new int[] { 1, 2, 3 };
+         foreach (var v in vals) {
+            tStack.Push (v);
+            stack.Push (v);
+         }
+         Assert.AreEqual (stack.Pop (), tStack.Pop ());
       }
 
       [TestMethod]
       public void TestPeek () {
-         TStack<string> stack = new ();
-         stack.Push ("Hello");
-         stack.Push ("Hi");
-         string peekValue = stack.Peek ();
-         Assert.AreEqual ("Hi", peekValue);
+         TStack<string> tStack = new ();
+         Stack<string> stack = new ();
+         var vals = new string[] { "Hi", "Hello", "Super" };
+         foreach (var v in vals) {
+            tStack.Push (v);
+            stack.Push (v);
+         }
+         Assert.AreEqual (stack.Peek (), tStack.Peek ());
       }
 
       [TestMethod]
