@@ -17,7 +17,7 @@ foreach (var w in valid) {
    Console.ResetColor ();
    total += score;
 }
-Console.WriteLine ($"---\n{total,3} total");
+Console.WriteLine ($"----\n{total,3} total");
 
 // Checking the given string is valid or not
 bool IsValid (string word) {
@@ -33,7 +33,7 @@ bool IsPangram (string word) {
 // Compute the score of given string
 int GetScore (string word) {
    if (word.Length <= 4) return 1;
-   else if (IsPangram (word)) return word.Length + 7;
+   if (IsPangram (word)) return word.Length + 7;
    return word.Length;
 }
 
