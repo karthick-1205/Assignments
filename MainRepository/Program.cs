@@ -1,6 +1,5 @@
 ﻿// Program to find the possible combinations of queen in the n*n chess board
 class PlaceNQueen {
-   static int Count;
    // Function to check if two queens attack each other or not
    // Unicode of queen-\u2655
    static bool IsSafe (char[,] board, int r, int c) {
@@ -23,9 +22,7 @@ class PlaceNQueen {
          Console.Write ("\u2502");
          for (int j = 0; j < board.GetLength (1); j++)
             Console.Write (board[i, j] == '\u2655' ? " \u2655 \u2502" : "   \u2502");
-         if (i == 7) {
-            break;
-         }
+         if (i == 7) break;
          Console.WriteLine ();
          Console.WriteLine ("├───┼───┼───┼───┼───┼───┼───┼───┤");
       }
@@ -33,11 +30,12 @@ class PlaceNQueen {
       Console.WriteLine ("└───┴───┴───┴───┴───┴───┴───┴───┘");
    }
 
+   static int sCount;
    static void NQueen (char[,] board, int r) {
       // if N queens are placed successfully,print the solution
       if (r == board.GetLength (0)) {
-         Count++;
-         Console.WriteLine ($"Solution {Count}");
+         sCount++;
+         Console.WriteLine ($"Solution {sCount}");
          PrintSolution (board);
       }
       for (int i = 0; i < board.GetLength (0); i++) {
