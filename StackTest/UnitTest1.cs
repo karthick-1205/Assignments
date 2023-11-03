@@ -1,3 +1,5 @@
+using Stack;
+
 namespace StackTest {
    [TestClass]
    public class UnitTest1 {
