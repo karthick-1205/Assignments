@@ -5,13 +5,13 @@ namespace Test2 {
          int[] bits = { 0, 0, 0, 0, 0, 0, 0 };
          int[] powers = { 64, 32, 16, 8, 4, 2, 1 };
          ConsoleKey firstDigit;
-         do {
+         while (true) {
             Console.Write ("Is your number is odd or even? (o/e): ");
             firstDigit = Console.ReadKey ().Key;
             if (firstDigit is not ConsoleKey.O and not ConsoleKey.E)
                Console.WriteLine ("\nEnter valid input");
-            else break;
-         } while (true);
+            else break; 
+         }
          if (firstDigit is ConsoleKey.O) bits[6] = 1;
          Console.WriteLine ();
          int n = 2;
