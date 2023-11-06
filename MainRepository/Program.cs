@@ -1,19 +1,18 @@
 ﻿// This program validates the file path
 // BNF diagram of finding valid file path
-// file://C:/WorkGIT/Assignments/MainRepository/Data/bnf-diagram.PNG
 using static State;
-var strs = new List<string> { @"C:\PROGRAMS\DATA\README.TXT", @"C:\PROGRAMS\README.TXT", @"C:\PROGRAMS\DATA\DIR\README.TXT", @"C:\README.TXT", "..", "", "C:", "C:\\PROGRAMS\\README..TXT" };
+var strs = new List<string> { @"C:\PROGRAMS\DATA\README.TXT", @"C:\PROGRAMS\README.TXT"
+   , @"C:\PROGRAMS\DATA\DIR\README.TXT", @"C:\README.TXT", "..", "", "C:"
+   , "C:\\PROGRAMS\\README..TXT" };
 foreach (var str in strs) {
    if (IsValidFilePath (str)) {
       Console.ForegroundColor = ConsoleColor.Green;
-      Console.WriteLine ($"{str}");
-      Console.ResetColor ();
+      PrintValidPath (str);
       var (dir, folder, filename, ext) = Result (str);
       Console.WriteLine ($"{dir}, {folder}, {filename}, {ext}");
    } else {
       Console.ForegroundColor = ConsoleColor.Red;
-      Console.WriteLine ($"{str}");
-      Console.ResetColor ();
+      PrintValidPath (str);
    }
 }
 
@@ -46,6 +45,11 @@ bool IsValidFilePath (string input) {
       };
    }
    return (s == I);
+}
+
+void PrintValidPath (string path) {
+   Console.WriteLine ($"{path}");
+   Console.ResetColor ();
 }
 
 enum State { A, B, C, D, E, F, G, H, I, Z };
