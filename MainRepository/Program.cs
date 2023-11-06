@@ -6,13 +6,11 @@ var strs = new List<string> { @"C:\PROGRAMS\DATA\README.TXT", @"C:\PROGRAMS\READ
    , "C:\\PROGRAMS\\README..TXT" };
 foreach (var str in strs) {
    if (IsValidFilePath (str)) {
-      Console.ForegroundColor = ConsoleColor.Green;
-      PrintValidPath (str);
+      PrintPath (str, ConsoleColor.Green);
       var (dir, folder, filename, ext) = Result (str);
       Console.WriteLine ($"{dir}, {folder}, {filename}, {ext}");
    } else {
-      Console.ForegroundColor = ConsoleColor.Red;
-      PrintValidPath (str);
+      PrintPath (str, ConsoleColor.Red);
    }
 }
 
@@ -47,7 +45,8 @@ bool IsValidFilePath (string input) {
    return (s == I);
 }
 
-void PrintValidPath (string path) {
+void PrintPath (string path, ConsoleColor clr) {
+   Console.ForegroundColor = clr;
    Console.WriteLine ($"{path}");
    Console.ResetColor ();
 }
