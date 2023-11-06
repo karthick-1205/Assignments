@@ -1,28 +1,34 @@
-﻿// Implementation of string is valid file path or not into tuple format.
+﻿// This program validates the file path
+// BNF diagram of finding valid file path
+// file://C:/WorkGIT/Assignments/MainRepository/Data/bnf-diagram.PNG
 using static State;
 var strs = new List<string> { @"C:\PROGRAMS\DATA\README.TXT", @"C:\PROGRAMS\README.TXT", @"C:\PROGRAMS\DATA\DIR\README.TXT", @"C:\README.TXT", "..", "", "C:", "C:\\PROGRAMS\\README..TXT" };
 foreach (var str in strs) {
-   if (ParseFile (str)) {
-      Console.WriteLine ($"{str} is a Valid filepath.");
-      var res = Result (str);
-      Console.WriteLine ($"{res.dir}, {res.folder}, {res.filename}, {res.ext}");
-   } else { Console.WriteLine ($"{str} is Not a Valid filepath."); }
+   if (IsValidFilePath (str)) {
+      Console.ForegroundColor = ConsoleColor.Green;
+      Console.WriteLine ($"{str}");
+      Console.ResetColor ();
+      var (dir, folder, filename, ext) = Result (str);
+      Console.WriteLine ($"{dir}, {folder}, {filename}, {ext}");
+   } else {
+      Console.ForegroundColor = ConsoleColor.Red;
+      Console.WriteLine ($"{str}");
+      Console.ResetColor ();
+   }
 }
 
-// Convert valid filepath into tuple format
+// Extracts drive, directory, filename and extension from the given file path 
 (string dir, string folder, string filename, string ext) Result (string input) {
-   string[] splits = input.Split ('\\'); // C: programs data readme.txt
-   string drive = splits[0];
-   string folders = "";
-   for (int i = 1; i < splits.Length - 1; i++) folders += splits[i] + "\\";
-   splits = splits[splits.Length - 1].Split ('.'); // readme txt
-   string filename = splits[0];
-   string extension = splits[1];
-   return (drive, folders, filename, extension);
+   string drive = Path.GetPathRoot (input)!;
+   drive = drive.Replace ("\\", "");
+   string folders = Path.GetDirectoryName (input)!.Substring (drive.Length);
+   string fileName = Path.GetFileNameWithoutExtension (input);
+   string extension = Path.GetExtension (input).TrimStart ('.');
+   return (drive, folders, fileName, extension);
 }
 
-// Check string is valid filepath or not
-bool ParseFile (string input) {
+// Checks if the given string is valid filepath or not
+bool IsValidFilePath (string input) {
    State s = A;
    foreach (var ch in input.Trim ().ToUpper () + "~") {
       s = (s, ch) switch {
