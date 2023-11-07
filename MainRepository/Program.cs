@@ -1,5 +1,4 @@
-﻿// Implementation of DoubleEnd Queue using array
-TQueue<int> q = new ();
+﻿TQueue<int> q = new ();
 q.EnqueueFront (1);
 q.EnqueueFront (2);
 q.EnqueueFront (3);
@@ -10,8 +9,9 @@ q.EnqueueRear (2);
 q.EnqueueRear (3);
 while (!q.IsEmpty) Console.Write (q.DequeueRear () + " ");
 
+/// <summary>Implementation of double ended queue class</summary>
 class TQueue<T> {
-   // Add element in the front position
+   /// <summary>Inserts elements in the front position of the double ended queue</summary>
    public void EnqueueFront (T a) {
       if (mCount == mData.Length) {
          T[] tmp = new T[mCount * 2];
@@ -25,7 +25,7 @@ class TQueue<T> {
       Console.WriteLine ($"Inserting {a}");
    }
 
-   // Add element in the rear position
+   /// <summary>Inserts elements in the rear position of the double ended queue</summary>
    public void EnqueueRear (T a) {
       if (mCount == mData.Length) {
          T[] tmp = new T[mCount * 2];
@@ -40,7 +40,7 @@ class TQueue<T> {
 
    }
 
-   // Remove element in the front position
+   /// <summary>Removes elements in the front position of the double ended queue</summary>
    public T DequeueFront () {
       if (IsEmpty) throw new Exception ("Queue empty");
       T a = mData[mFront];
@@ -49,7 +49,7 @@ class TQueue<T> {
       return a;
    }
 
-   // Remove element in the rear position
+   /// <summary>Removes elements in the rear position of the double ended queue</summary>
    public T DequeueRear () {
       if (IsEmpty) throw new Exception ("Queue empty");
       mRear = (mRear - 1 + mData.Length) % mData.Length;
@@ -57,7 +57,8 @@ class TQueue<T> {
       mCount--;
       return a;
    }
-   // Check queue is empty or not
+   
+   /// <summary>Returns true if double ended queue is empty</summary>
    public bool IsEmpty => mCount == 0;
 
    int mCount; // Count of elements in the Queue
