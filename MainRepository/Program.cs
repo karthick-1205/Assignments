@@ -11,17 +11,15 @@ Console.WriteLine ("Removing " + t.DeQueue ());
 class TQueue<T> {
    /// <summary>Adds element in the queue</summary>
    public void EnQueue (T a) {
-      if (mPointer == mQueueArray.Length) {
-         var newArray = new T[mPointer * 2];
-         for (int i = 0; i < mPointer; i++)
-            newArray[i] = mQueueArray[(mFront + i) % mPointer];
-         mQueueArray = newArray;
-         mFront = 0;
-         mRear = mPointer;
+      if (mCount == mQueueArray.Length) {
+         var newArray = new T[mCount * 2];
+         for (int i = 0; i < mCount; i++)
+            newArray[i] = mQueueArray[(mFront + i) % mCount];
+         (mQueueArray, mFront, mRear) = (newArray, 0, mCount);
       }
       mQueueArray[mRear] = a;
       mRear = (mRear + 1) % mQueueArray.Length;
-      mPointer++;
+      mCount++;
       Console.WriteLine ($"Inserting {a}");
    }
 
@@ -30,14 +28,14 @@ class TQueue<T> {
       if (IsEmpty) throw new Exception ("Underflow");
       T item = mQueueArray[mFront];
       mFront = (mFront + 1) % mQueueArray.Length;
-      mPointer--;
+      mCount--;
       return item;
    }
 
    /// <summary>Checks element is present or not in the queue</summary>
-   public bool IsEmpty => mPointer == 0;
+   public bool IsEmpty => mCount == 0;
 
    /// <summary>Intialize the array with size of 4</summary>
    T[] mQueueArray = new T[4];
-   int mPointer, mFront, mRear;
+   int mCount, mFront, mRear;
 }
