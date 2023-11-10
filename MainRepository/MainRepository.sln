@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainRepository", "MainRepository.csproj", "{A2591E6B-8349-4735-A4AD-469715EBA43F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainRepository", "MainRepository.csproj", "{A2591E6B-8349-4735-A4AD-469715EBA43F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueTest", "..\QueueTest\QueueTest.csproj", "{3FF080BF-FF88-4002-B6EA-F9D690807B2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A2591E6B-8349-4735-A4AD-469715EBA43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2591E6B-8349-4735-A4AD-469715EBA43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2591E6B-8349-4735-A4AD-469715EBA43F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FF080BF-FF88-4002-B6EA-F9D690807B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FF080BF-FF88-4002-B6EA-F9D690807B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FF080BF-FF88-4002-B6EA-F9D690807B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FF080BF-FF88-4002-B6EA-F9D690807B2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
