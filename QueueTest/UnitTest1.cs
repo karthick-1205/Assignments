@@ -38,13 +38,11 @@ namespace QueueTest {
       }
 
       [TestMethod]
-      public void PopEmptyQueueTest () {
+      public void PopEmptyQueueTest () =>
          Assert.ThrowsException<InvalidOperationException> (() => new TQueue<string> ().DeQueue ());
-      }
 
       [TestMethod]
-      public void PeekEmptyQueueTest () {
+      public void PeekEmptyQueueTest () =>
          Assert.ThrowsException<InvalidOperationException> (() => new TQueue<string> ().Peek ());
-      }
    }
 }
