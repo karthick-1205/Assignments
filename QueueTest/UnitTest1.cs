@@ -44,7 +44,6 @@ namespace QueueTest {
 
       [TestMethod]
       public void PeekEmptyQueueTest () {
-         TQueue<string> queue = new ();
          Assert.ThrowsException<InvalidOperationException> (() => new TQueue<string> ().Peek ());
       }
    }
