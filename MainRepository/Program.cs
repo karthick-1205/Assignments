@@ -1,4 +1,5 @@
-﻿internal class Program {
+﻿namespace Queue;
+internal class Program {
    private static void Main () {
    }
 }
@@ -7,22 +8,22 @@
 public class TQueue<T> {
    /// <summary>Inserts elements into the queue</summary>
    public void EnQueue (T a) {
-      if (mCount == mQueueArray.Length) {
-         var newArray = new T[mCount * 2];
+      if (mCount == mQueue.Length) {
+         var tmp = new T[mCount * 2];
          for (int i = 0; i < mCount; i++)
-            newArray[i] = mQueueArray[(mFront + i) % mCount];
-         (mQueueArray, mFront, mRear) = (newArray, 0, mCount);
+            tmp[i] = mQueue[(mFront + i) % mCount];
+         (mQueue, mFront, mRear) = (tmp, 0, mCount);
       }
-      mQueueArray[mRear] = a;
-      mRear = (mRear + 1) % mQueueArray.Length;
+      mQueue[mRear] = a;
+      mRear = (mRear + 1) % mQueue.Length;
       mCount++;
    }
 
    /// <summary>Remove elements from the queue</summary>
    public T DeQueue () {
       if (IsEmpty) throw new InvalidOperationException ("Queue empty");
-      T a = mQueueArray[mFront];
-      mFront = (mFront + 1) % mQueueArray.Length;
+      T a = mQueue[mFront];
+      mFront = (mFront + 1) % mQueue.Length;
       mCount--;
       return a;
    }
@@ -30,14 +31,14 @@ public class TQueue<T> {
    /// <summary>Returns first element of the queue</summary>
    public T Peek () {
       if (IsEmpty) throw new InvalidOperationException ("Queue empty");
-      T a = mQueueArray[mFront];
-      return a;
+      return mQueue[mFront];
    }
 
    /// <summary>Returns true if the queue is empty</summary>
    public bool IsEmpty => mCount == 0;
 
-   T[] mQueueArray = new T[4];
-   int mCount, mFront, mRear;
-
+   T[] mQueue = new T[4];
+   int mRear; // Position where the next Enqueue will happen
+   int mFront; // Position where the next Dequeue will happen
+   int mCount; // Count of elements in the queue
 }

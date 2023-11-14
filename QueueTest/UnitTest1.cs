@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-
+using Queue;
 namespace QueueTest {
    [TestClass]
    public class UnitTest1 {
@@ -40,14 +39,13 @@ namespace QueueTest {
 
       [TestMethod]
       public void PopEmptyQueueTest () {
-         TQueue<string> queue = new ();
-         Assert.ThrowsException<InvalidOperationException> (() => queue.DeQueue ());
+         Assert.ThrowsException<InvalidOperationException> (() => new TQueue<string> ().DeQueue ());
       }
 
       [TestMethod]
       public void PeekEmptyQueueTest () {
          TQueue<string> queue = new ();
-         Assert.ThrowsException<InvalidOperationException> (() => queue.Peek ());
+         Assert.ThrowsException<InvalidOperationException> (() => new TQueue<string> ().Peek ());
       }
    }
 }
