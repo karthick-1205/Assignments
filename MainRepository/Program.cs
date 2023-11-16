@@ -70,8 +70,6 @@ public class MyList<T> {
       mCount--;
       mList[mCount] = default!;
       return true;
-      //RemoveAt (Array.IndexOf (mList, a, 0, mCount));
-      //return true;
    }
 
    /// <summary>Removes the element in the given index position</summary>
