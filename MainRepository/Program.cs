@@ -29,11 +29,7 @@ public class MyList<T> {
    /// <summary>Adds an element to the list and increase its size if required</summary>
    /// <param name="a">The element to be added</param>
    public void Add (T a) {
-      if (mCount == Capacity) {
-         var tmp = new T[mCount * 2];
-         for (int i = 0; i < mCount; i++) tmp[i] = mList[i];
-         mList = tmp;
-      }
+      ResizeArray ();
       mList[mCount++] = a;
    }
 
@@ -49,11 +45,7 @@ public class MyList<T> {
    /// <exception cref="IndexOutOfRangeException">Throws exception when the given index below 0 (or) greater than or equal to the count</exception>
    public void Insert (int index, T a) {
       ValidateIndex (index);
-      if (mCount == Capacity) {
-         var tmp = new T[mCount * 2];
-         for (int i = 0; i < mCount; i++) tmp[i] = mList[i];
-         mList = tmp;
-      }
+      ResizeArray ();
       for (int i = mCount; i > index; i--) mList[i] = mList[i - 1];
       mList[index] = a;
       mCount++;
@@ -81,17 +73,27 @@ public class MyList<T> {
       Remove (mList[index]);
    }
 
+   /// <summary>Resizes the array if the current count is equal to the capacity</summary>
+   public void ResizeArray () {
+      if (mCount == Capacity) {
+         var tmp = new T[mCount * 2];
+         for (int i = 0; i < mCount; i++) tmp[i] = mList[i];
+         mList = tmp;
+      }
+   }
+
    /// <summary>Gets / sets the value in the given index</summary>
    /// <param name="index">The index position to get or set the value</param>
    /// <returns>The value in the given index position</returns>
    /// <exception cref="IndexOutOfRangeException">Throws exception when the given index below 0 (or) greater than or equal to the count</exception>
    public T this[int index] {
       get {
-         if (ValidateIndex (index)) return mList[index];
-         return default!;
+         ValidateIndex (index);
+         return mList[index];
       }
       set {
-         if (ValidateIndex (index)) mList[index] = value;
+         ValidateIndex (index);
+         mList[index] = value;
       }
    }
 
@@ -99,9 +101,8 @@ public class MyList<T> {
    /// <param name="pos">The index is to be validated</param>
    /// <returns>Returns true if the index within the valid range</returns>
    /// <exception cref="IndexOutOfRangeException">Throws exception when the given index below 0 (or) greater than or equal to the count</exception>
-   public bool ValidateIndex (int pos) {
+   public void ValidateIndex (int pos) {
       if (pos < 0 || pos >= mCount) throw new IndexOutOfRangeException ("Index out of valid range");
-      return true;
    }
    #endregion
 
