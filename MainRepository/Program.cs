@@ -20,7 +20,6 @@ class TQueue<T> {
       mQueueArray[mRear] = a;
       mRear = (mRear + 1) % mQueueArray.Length;
       mCount++;
-      Console.WriteLine ($"Inserting {a}");
    }
 
    /// <summary>Removes element in the queue</summary>
