@@ -19,9 +19,9 @@ class Wordle {
 
    /// <summary>Returns true if the given word is valid</summary>
    public bool ValidWord () {
-      string givenString = string.Join ("", mList).ToUpper ();
-      string[] validWord = File.ReadAllLines (@"c:\etc\dict-5.txt");
-      return validWord.Contains (givenString);
+      string input = string.Join ("", mList).ToUpper ();
+      string[] validWords = File.ReadAllLines (@"c:\etc\dict-5.txt");
+      return validWords.Contains (input);
    }
 
    /// <summary>Update the game-state based on the key the user pressed</summary>
@@ -45,17 +45,21 @@ class Wordle {
                   mWordle[i, j] = char.ToUpper (c);
                   if (mList.Count < 5) mList.Add (c);
                }
-               if (i < 5 && j == 4) mWordle[i + 1, 0] = mCircle;
                if (j == 4) {
                   DisplayBoard (word);
                   while (true) {
-                     var lkey = Console.ReadKey (true);
-                     if (lkey.Key == ConsoleKey.Enter && ValidWord ()) {
+                     var lastKey = Console.ReadKey (true);
+                     if (lastKey.Key == ConsoleKey.Enter && ValidWord ()) {
                         Console.WriteLine (new string (' ', Console.WindowWidth));
                         break;
                      }
-                     if (lkey.Key == ConsoleKey.Enter && !ValidWord ()) Console.WriteLine ("Not a valid word");
-                     if (lkey.Key == ConsoleKey.Backspace) {
+                     if (lastKey.Key == ConsoleKey.Enter && !ValidWord ()) {
+                        mBadWord = string.Join ("", mList).ToUpper ();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine ($"{mBadWord} is not a word");
+                        Console.ResetColor ();
+                     }
+                     if (lastKey.Key == ConsoleKey.Backspace) {
                         mWordle[i, 4] = mCircle;
                         mWordle[i + 1, 0] = mDot;
                         j--;
@@ -64,6 +68,7 @@ class Wordle {
                      }
                   }
                }
+               if (i < 5 && j == 4) mWordle[i + 1, 0] = mCircle;
                DisplayBoard (word);
                if (mList.Count == 5) {
                   DisplayBoard (word, true);
@@ -81,13 +86,13 @@ class Wordle {
       }
    }
 
-   /// <summary>Set the foreground color for the list</summary>
-   public char Color (char clr) {
-      if (mGreenList.Contains (clr)) Console.ForegroundColor = ConsoleColor.Green;
-      else if (mYellowList.Contains (clr))
-         Console.ForegroundColor = ConsoleColor.Yellow;
+   /// <summary>Sets the foreground color for the alphabet</summary>
+   public char SetForegroundClr (char ch) {
+      if (mGreenList.Contains (ch)) Console.ForegroundColor = ConsoleColor.Green;
+      else if (mBlueList.Contains (ch))
+         Console.ForegroundColor = ConsoleColor.Blue;
       else Console.ForegroundColor = ConsoleColor.Gray;
-      return clr;
+      return ch;
    }
 
    /// <summary>Displays the current state of the board</summary>
@@ -96,22 +101,19 @@ class Wordle {
       Console.CursorTop = 0;
       Console.CursorVisible = false;
       Console.WriteLine ();
-      Console.CursorLeft = (Console.WindowWidth / 2) - 5;
+      Console.CursorLeft = mHalfWidth - 5;
       for (int i = 0; i < 6; i++) {
          for (int j = 0; j < 5; j++) {
             if (i < mRow || isEntered) {
                if (word[j] == mWordle[i, j]) {
                   Console.ForegroundColor = ConsoleColor.Green;
-                  if (!mGreenList.Contains (mWordle[i, j]))
-                     mGreenList.Add (mWordle[i, j]);
+                  AddList (mGreenList, i, j);
                } else if (word.Contains (mWordle[i, j])) {
-                  Console.ForegroundColor = ConsoleColor.Yellow;
-                  if (!mYellowList.Contains (mWordle[i, j]))
-                     mYellowList.Add (mWordle[i, j]);
+                  Console.ForegroundColor = ConsoleColor.Blue;
+                  AddList (mBlueList, i, j);
                } else {
                   Console.ForegroundColor = ConsoleColor.Gray;
-                  if (!mGrayList.Contains (mWordle[i, j]))
-                     mGrayList.Add (mWordle[i, j]);
+                  AddList (mGrayList, i, j);
                }
             }
             Console.Write (mWordle[i, j] + "  ");
@@ -119,56 +121,77 @@ class Wordle {
          }
          Console.WriteLine ();
          Console.WriteLine ();
-         Console.CursorLeft = (Console.WindowWidth / 2) - 5;
+         Console.CursorLeft = mHalfWidth - 5;
       }
       PrintAlphabet ();
    }
 
    /// <summary>Prints the alphabet</summary>
    public void PrintAlphabet () {
-      Console.CursorLeft = (Console.WindowWidth / 2) - 13;
+      CursorCenter ();
       Console.WriteLine (new string ('_', 25));
       Console.WriteLine ();
-      Console.CursorLeft = (Console.WindowWidth / 2) - 13;
+      CursorCenter ();
       for (int i = 0; i < 26; i++) {
          char ch = (char)('A' + i);
-         Console.Write (Color (ch) + "   ");
+         Console.Write (SetForegroundClr (ch) + "   ");
          if ((ch - 64) % 7 == 0) {
-            Console.SetCursorPosition ((Console.WindowWidth / 2) - 13, Console.CursorTop + 1);
+            Console.SetCursorPosition (mHalfWidth - 13, Console.CursorTop + 1);
          }
       }
       Console.WriteLine ();
-      Console.CursorLeft = (Console.WindowWidth / 2) - 5;
+      Console.CursorLeft = mHalfWidth - 5;
+   }
+
+   /// <summary>Centres the cursor position</summary>
+   public void CursorCenter () => Console.CursorLeft = mHalfWidth - 13;
+
+   /// <summary>Adds each character to the list</summary>
+   public void AddList (List<char> list, int i, int j) {
+      if (!list.Contains (mWordle[i, j])) list.Add (mWordle[i, j]);
    }
 
    /// <summary>Prints the final result</summary>
    public void PrintResult (string word) {
-      Console.CursorLeft = (Console.WindowWidth / 2) - 13;
+      CursorCenter ();
       Console.WriteLine (new string ('_', 25));
       if (mGameOver) {
-         Console.CursorLeft = (Console.WindowWidth / 2) - 13;
+         CursorCenter ();
+         Console.ForegroundColor = ConsoleColor.Green;
          Console.WriteLine ("Congratulations you won it!");
-         Console.CursorLeft = (Console.WindowWidth / 2) - 13;
+         Console.WriteLine ();
+         CursorCenter ();
          Console.WriteLine ($"You found the word in {mCount} tries");
-         return;
+         Console.ResetColor ();
       } else {
-         Console.CursorLeft = (Console.WindowWidth / 2) - 13;
-         Console.WriteLine ("You lose it!");
-         Console.CursorLeft = (Console.WindowWidth / 2) - 13;
-         Console.WriteLine ($"Today word is {word}");
+         CursorCenter ();
+         Console.ForegroundColor = ConsoleColor.Yellow;
+         Console.WriteLine ("You lost it!");
+         Console.WriteLine ();
+         CursorCenter ();
+         Console.WriteLine ($"Today's word is {word}");
          mGameOver = true;
+         Console.ResetColor ();
       }
+      Console.WriteLine ();
+      CursorCenter ();
+      Console.WriteLine ("Press any key to quit");
+      CursorCenter ();
+      Console.ReadKey ();
+      Console.WriteLine ();
    }
 
    readonly List<char> mList = new ();
    readonly List<char> mGreenList = new ();
-   readonly List<char> mYellowList = new ();
+   readonly List<char> mBlueList = new ();
    readonly List<char> mGrayList = new ();
    readonly char mCircle = '\u25cc';
    readonly char mDot = '\u00b7';
    bool mGameOver = false;
    int mRow = 0;
    int mCount = 0;
+   string? mBadWord;
+   readonly int mHalfWidth = Console.WindowWidth / 2;
    readonly char[,] mWordle = { { '\u25cc', '\u00b7', '\u00b7', '\u00b7','\u00b7' },
                        { '\u00b7', '\u00b7', '\u00b7', '\u00b7', '\u00b7' },
                        { '\u00b7', '\u00b7', '\u00b7', '\u00b7', '\u00b7' },
