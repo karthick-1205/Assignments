@@ -1,20 +1,23 @@
-﻿/// <summary>Implementation of Worlde game</summary>
+﻿#region class Wordle---------------------------------------------------------------------
+/// <summary>Implementation of Worlde game</summary>
 class Wordle {
    /// <summary>Public interface routine to run the game</summary>
    public void Run () {
-      string secretWord = SelectWord ();
-      DisplayBoard (secretWord);
+      DisplayBoard ();
       while (!mGameOver) {
-         UpdateGameState (secretWord);
-         PrintResult (secretWord);
+         ConsoleKeyInfo key = Console.ReadKey (true);
+         UpdateGameState (key);
+         DisplayBoard ();
       }
+      PrintResult ();
    }
 
-   /// <summary>Centres the cursor position</summary>
+   #region Methods ------------------------------------------------
+   /// <summary>Centers the cursor position</summary>
    public void CenterCursor () => Console.CursorLeft = mHalfWidth - 13;
 
    /// <summary>Displays the current state of the board</summary>
-   public void DisplayBoard (string word, bool isEntered = false) {
+   public void DisplayBoard () {
       Console.CursorLeft = 0;
       Console.CursorTop = 0;
       Console.CursorVisible = false;
@@ -23,10 +26,11 @@ class Wordle {
       for (int i = 0; i < 6; i++) {
          for (int j = 0; j < 5; j++) {
             char ch = mWordle[i, j];
-            if (i < mRow || isEntered) {
-               if (word[j] == ch) AddList (mGreenList, ch, ConsoleColor.Green);
-               else if (word.Contains (ch)) AddList (mBlueList, ch, ConsoleColor.Blue);
-               else AddList (mGrayList, ch, ConsoleColor.DarkGray);
+            if (i < mCount || mIsEnterPressed) {
+               if (mSecretWord[j] == ch) AddList (mGreenList, ch, ConsoleColor.Green);
+               else if (mSecretWord.Contains (ch)) AddList (mBlueList, ch, ConsoleColor.Blue);
+               else if (!mSecretWord.Contains (ch) && char.IsLetter (ch)) AddList (mGrayList, ch, ConsoleColor.DarkGray);
+               else AddList (mWhiteList, ch, ConsoleColor.White);
             }
             Console.Write (ch + "  ");
             Console.ResetColor ();
@@ -35,7 +39,15 @@ class Wordle {
          Console.WriteLine ();
          Console.CursorLeft = mHalfWidth - 5;
       }
+      mIsEnterPressed = false;
       PrintAlphabet ();
+      if (mGreenList.Count == 5) {
+         mGameOver = true;
+         mFoundWord = true;
+      }
+      mGreenList.Clear ();
+      mBlueList.Clear ();
+      mGrayList.Clear ();
 
       /// <summary>Adds each character to the list</summary>
       static void AddList (List<char> list, char c, ConsoleColor clr) {
@@ -68,6 +80,15 @@ class Wordle {
       Console.CursorLeft = mHalfWidth - 5;
    }
 
+   /// <summary>Prints the error message</summary>
+   void PrintErrorMessage (string msg) {
+      mBadWord = string.Join ("", mList).ToUpper ();
+      Console.SetCursorPosition (mHalfWidth - 1, Console.CursorTop);
+      Console.ForegroundColor = ConsoleColor.Yellow;
+      Console.WriteLine ($"{mBadWord} {msg}");
+      Console.ResetColor ();
+   }
+
    /// <summary>Prints the message</summary>
    public void PrintMessage (ConsoleColor clr, string s1, string s2) {
       CenterCursor ();
@@ -80,18 +101,17 @@ class Wordle {
    }
 
    /// <summary>Prints the final result</summary>
-   public void PrintResult (string word) {
+   public void PrintResult () {
       CenterCursor ();
       Console.WriteLine (new string ('_', 25));
-      if (mGameOver) {
+      if (mGameOver && mFoundWord) {
          string msg1 = "Congratulations you won it!";
          string msg2 = $"You found the word in {mCount} tries";
          PrintMessage (ConsoleColor.Green, msg1, msg2);
       } else {
          string msg1 = "You lost it!";
-         string msg2 = $"Today's word is {word}";
+         string msg2 = $"Today's word is {mSecretWord}";
          PrintMessage (ConsoleColor.Yellow, msg1, msg2);
-         mGameOver = true;
       }
       Console.WriteLine ();
       CenterCursor ();
@@ -109,73 +129,32 @@ class Wordle {
    }
 
    /// <summary>Update the game-state based on the key the user pressed</summary>
-   public void UpdateGameState (string word) {
-      for (int i = 0; i < 6; i++) {
-         for (int j = 0; j < 5; j++) {
-            if (mWordle[i, j] == mCircle) {
-               mRow = i;
-               ConsoleKeyInfo key = Console.ReadKey (true);
-               if (key.Key is ConsoleKey.Backspace or ConsoleKey.LeftArrow) {
-                  if (j == 0) j--;
-                  else {
-                     mWordle[i, j - 1] = mCircle;
-                     mWordle[i, j] = mDot;
-                     j -= 2;
-                     mList.RemoveAt (mList.Count - 1);
-                  }
-               } else if (char.ToUpper (key.KeyChar) is >= 'A' and <= 'Z') {
-                  if (j < 4) mWordle[i, j + 1] = mCircle;
-                  char c = Convert.ToChar (key.KeyChar);
-                  mWordle[i, j] = char.ToUpper (c);
-                  if (mList.Count < 5) mList.Add (c);
-               }
-               if (j == 4) {
-                  DisplayBoard (word);
-                  while (true) {
-                     var lastKey = Console.ReadKey (true);
-                     if (lastKey.Key == ConsoleKey.Enter && ValidWord ()) {
-                        Console.WriteLine (new string (' ', Console.WindowWidth));
-                        break;
-                     }
-                     if (lastKey.Key == ConsoleKey.Enter && !ValidWord ()) {
-                        mBadWord = string.Join ("", mList).ToUpper ();
-                        var cursorTop = mInvalid ? Console.CursorTop - 1 : Console.CursorTop;
-                        Console.SetCursorPosition (mHalfWidth - 1, cursorTop);
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine ($"{mBadWord} is not a word");
-                        Console.ResetColor ();
-                        mInvalid = true;
-                     }
-                     if (lastKey.Key == ConsoleKey.Backspace) {
-                        mWordle[i, 4] = mCircle;
-                        mWordle[i + 1, 0] = mDot;
-                        j--;
-                        mList.RemoveAt (4);
-                        Console.SetCursorPosition (mHalfWidth - 1, Console.CursorTop - 1);
-                        mInvalid = false;
-                        Console.WriteLine (new string (' ', Console.WindowWidth));
-                        break;
-                     }
-                  }
-               } else if (key.Key is ConsoleKey.Enter && j < 4) {
-                  j--;
-                  continue;
-               }
-               if (i < 5 && j == 4) mWordle[i + 1, 0] = mCircle;
-               DisplayBoard (word);
-               if (mList.Count == 5) {
-                  DisplayBoard (word, true);
-                  if (mGreenList.Count == 5) {
-                     mGameOver = true;
-                     mCount++;
-                     return;
-                  }
-                  if (!ValidWord ()) j--;
-                  else mList.Clear ();
-               }
-            }
+   public void UpdateGameState (ConsoleKeyInfo key) {
+      if (key.Key == ConsoleKey.Enter && mList.Count == 5) {
+         if (ValidWord ()) {
+            mGameOver = mRow == 5 && mCol == 5;
+            mRow++; mCol = 0;
+            mList.Clear ();
+            if (mRow <= 5) mWordle[mRow, mCol] = mCircle;
+            mIsEnterPressed = true;
+            mCount++;
+            Console.WriteLine (new string (' ', Console.WindowWidth));
+         } else PrintErrorMessage ("is not a word");
+      } else if (key.Key is ConsoleKey.Backspace or ConsoleKey.LeftArrow && mCol >= 0) {
+         if (mCol > 0) {
+            mList.RemoveAt (mCol - 1);
+            if (mCol != 5) mWordle[mRow, mCol] = mDot;
+            mCol--;
+            mWordle[mRow, mCol] = mCircle;
+            Console.WriteLine (new string (' ', Console.WindowWidth));
          }
-         mCount++;
+      } else if (char.IsLetter (key.KeyChar)) {
+         if (mCol <= 4) {
+            char c = char.ToUpper (key.KeyChar);
+            mList.Add (c);
+            mWordle[mRow, mCol++] = c;
+            if (mCol < 5) mWordle[mRow, mCol] = mCircle;
+         }
       }
    }
 
@@ -185,25 +164,31 @@ class Wordle {
       string[] validWords = File.ReadAllLines (@"c:\etc\dict-5.txt");
       return validWords.Contains (input);
    }
+   #endregion
 
+   #region Private data ------------------------------------------
    readonly List<char> mList = new ();
    readonly List<char> mGreenList = new ();
    readonly List<char> mBlueList = new ();
    readonly List<char> mGrayList = new ();
-   readonly char mCircle = '\u25cc';
-   readonly char mDot = '\u00b7';
+   readonly List<char> mWhiteList = new ();
+   static readonly char mCircle = '\u25cc';
+   static readonly char mDot = '\u00b7';
    bool mGameOver = false;
-   bool mInvalid;
-   int mRow = 0;
+   bool mFoundWord = false;
+   int mRow, mCol;
    int mCount = 0;
    string? mBadWord;
+   readonly string? mSecretWord = SelectWord ();
    readonly int mHalfWidth = Console.WindowWidth / 2;
-   readonly char[,] mWordle = { { '\u25cc', '\u00b7', '\u00b7', '\u00b7','\u00b7' },
-                       { '\u00b7', '\u00b7', '\u00b7', '\u00b7', '\u00b7' },
-                       { '\u00b7', '\u00b7', '\u00b7', '\u00b7', '\u00b7' },
-                       { '\u00b7', '\u00b7', '\u00b7', '\u00b7', '\u00b7' },
-                       { '\u00b7', '\u00b7', '\u00b7', '\u00b7', '\u00b7' },
-                       { '\u00b7', '\u00b7', '\u00b7', '\u00b7', '\u00b7' }};
+   static bool mIsEnterPressed = false;
+   static readonly char[,] mWordle = { { mCircle, mDot, mDot, mDot,mDot },
+                       { mDot, mDot, mDot, mDot, mDot },
+                       { mDot, mDot, mDot, mDot, mDot },
+                       { mDot, mDot, mDot, mDot, mDot },
+                       { mDot, mDot, mDot, mDot, mDot },
+                       { mDot, mDot, mDot, mDot, mDot } };
+   #endregion
 }
 
 class Program {
@@ -212,3 +197,4 @@ class Program {
       new Wordle ().Run ();
    }
 }
+#endregion
