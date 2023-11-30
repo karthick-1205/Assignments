@@ -1,5 +1,5 @@
 ﻿#region class Wordle---------------------------------------------------------------------
-/// <summary>Implementation of Worlde game</summary>
+/// <summary>Implementation of Wordle game</summary>
 class Wordle {
    /// <summary>Public interface routine to run the game</summary>
    public void Run () {
@@ -14,10 +14,10 @@ class Wordle {
 
    #region Methods ------------------------------------------------
    /// <summary>Centers the cursor position</summary>
-   public void CenterCursor () => Console.CursorLeft = mHalfWidth - 13;
+   void CenterCursor () => Console.CursorLeft = mHalfWidth - 13;
 
    /// <summary>Displays the current state of the board</summary>
-   public void DisplayBoard () {
+   void DisplayBoard () {
       Console.CursorLeft = 0;
       Console.CursorTop = 0;
       Console.CursorVisible = false;
@@ -57,7 +57,7 @@ class Wordle {
    }
 
    /// <summary>Changes the foreground color for the alphabet</summary>
-   public void ForegroundClr (char ch) {
+   void ForegroundClr (char ch) {
       if (mGreenList.Contains (ch)) Console.ForegroundColor = ConsoleColor.Green;
       else if (mBlueList.Contains (ch)) Console.ForegroundColor = ConsoleColor.Blue;
       else if (mGrayList.Contains (ch)) Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -65,7 +65,7 @@ class Wordle {
    }
 
    /// <summary>Prints the alphabet</summary>
-   public void PrintAlphabet () {
+   void PrintAlphabet () {
       CenterCursor ();
       Console.WriteLine (new string ('_', 25));
       Console.WriteLine ();
@@ -90,7 +90,7 @@ class Wordle {
    }
 
    /// <summary>Prints the message</summary>
-   public void PrintMessage (ConsoleColor clr, string s1, string s2) {
+   void PrintMessage (ConsoleColor clr, string s1, string s2) {
       CenterCursor ();
       Console.ForegroundColor = clr;
       Console.WriteLine (s1);
@@ -101,7 +101,7 @@ class Wordle {
    }
 
    /// <summary>Prints the final result</summary>
-   public void PrintResult () {
+   void PrintResult () {
       CenterCursor ();
       Console.WriteLine (new string ('_', 25));
       if (mGameOver && mFoundWord) {
@@ -122,14 +122,14 @@ class Wordle {
    }
 
    /// <summary>Returns the random guess word</summary>
-   public static string SelectWord () {
+   static string SelectWord () {
       string[] lines = File.ReadAllLines (@"c:\etc\puzzle-5.txt");
       Random random = new ();
       return lines[random.Next (lines.Length)];
    }
 
    /// <summary>Update the game-state based on the key the user pressed</summary>
-   public void UpdateGameState (ConsoleKeyInfo key) {
+   void UpdateGameState (ConsoleKeyInfo key) {
       if (key.Key == ConsoleKey.Enter && mList.Count == 5) {
          if (ValidWord ()) {
             mGameOver = mRow == 5 && mCol == 5;
@@ -159,7 +159,7 @@ class Wordle {
    }
 
    /// <summary>Returns true if the given word is valid</summary>
-   public bool ValidWord () {
+   bool ValidWord () {
       string input = string.Join ("", mList).ToUpper ();
       return mWords.Contains (input);
    }
