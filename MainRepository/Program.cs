@@ -22,7 +22,7 @@ class Wordle {
       Console.CursorTop = 0;
       Console.CursorVisible = false;
       Console.WriteLine ();
-      Console.CursorLeft = mHalfWidth - 5;
+      Console.CursorLeft = mHalfWidth - 7;
       for (int i = 0; i < 6; i++) {
          for (int j = 0; j < 5; j++) {
             char ch = mWordle[i, j];
@@ -37,7 +37,7 @@ class Wordle {
          }
          Console.WriteLine ();
          Console.WriteLine ();
-         Console.CursorLeft = mHalfWidth - 5;
+         Console.CursorLeft = mHalfWidth - 7;
       }
       mIsEnterPressed = false;
       PrintAlphabet ();
@@ -161,8 +161,7 @@ class Wordle {
    /// <summary>Returns true if the given word is valid</summary>
    public bool ValidWord () {
       string input = string.Join ("", mList).ToUpper ();
-      string[] validWords = File.ReadAllLines (@"c:\etc\dict-5.txt");
-      return validWords.Contains (input);
+      return mWords.Contains (input);
    }
    #endregion
 
@@ -179,9 +178,10 @@ class Wordle {
    int mRow, mCol;
    int mCount = 0;
    string? mBadWord;
-   readonly string? mSecretWord = SelectWord ();
+   readonly string mSecretWord = SelectWord ();
    readonly int mHalfWidth = Console.WindowWidth / 2;
    static bool mIsEnterPressed = false;
+   static readonly string[] mWords = File.ReadAllLines ("C:/etc/dict-5.txt");
    static readonly char[,] mWordle = { { mCircle, mDot, mDot, mDot,mDot },
                        { mDot, mDot, mDot, mDot, mDot },
                        { mDot, mDot, mDot, mDot, mDot },
